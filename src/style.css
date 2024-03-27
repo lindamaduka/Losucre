@@ -5,9 +5,3 @@ body {
   align-items: center;
   justify-content: center;
 }
-
-.weather-app {
-  background: white;
-  max-width: 600px;
-  margin: 30px auto;
-}
