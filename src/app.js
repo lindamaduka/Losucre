@@ -6,9 +6,14 @@ function updateWeather(response) {
   let humidityElement = document.querySelector("#humidity");
   let windSpeedElement = document.querySelector("#wind-speed");
   let timeElement = document.querySelector("#time");
+  let iconElement = document.querySelector("#icon"); // Correct selector for the weather icon
   let date = new Date(response.data.dt * 1000);
 
-  console.log(response.data.dt);
+  console.log(response.data);
+
+  // Corrected URL for fetching the weather icon
+  iconElement.innerHTML = `<img src="https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png"
+    class="weather-app-icon" />`;
 
   timeElement.innerHTML = formatDate(date);
   cityElement.innerHTML = response.data.name;

@@ -1,9 +1,10 @@
 body {
-  background-color: #f9f7fe;
+  background-color: #ccccff;
   font-family: "Poppins", sans-serif;
   font-weight: 300;
   font-style: normal;
 }
+
 .poppins-light {
   font-family: "Poppins", sans-serif;
   font-weight: 300;
@@ -14,7 +15,7 @@ a {
   color: #885df1;
 }
 
-.weather.app {
+.weather-app {
   background: white;
   max-width: 600px;
   margin: 30px auto;
@@ -70,7 +71,7 @@ main {
 }
 
 .weather-app-details strong {
-  color: #f65282;
+  color: #20b2aa;
 }
 
 .weather-app-temperature-container {
