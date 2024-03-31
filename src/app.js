@@ -11,15 +11,14 @@ function updateWeather(response) {
 
   console.log(response.data);
 
-  iconElement.innerHTML = `<img src="https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png"
-    class="weather-app-icon" />`;
-
   timeElement.innerHTML = formatDate(date);
   cityElement.innerHTML = response.data.name;
   descriptionElement.innerHTML = response.data.weather[0].description;
   humidityElement.innerHTML = `${response.data.main.humidity}%`;
   windSpeedElement.innerHTML = `${response.data.wind.speed}m/s`;
   temperatureElement.innerHTML = Math.round(temperature);
+  iconElement.innerHTML = `<img src="https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png"
+    class="weather-app-icon" />`;
 
   getForecast(response.data.coord);
 }
@@ -55,6 +54,12 @@ function searchCity(city) {
   axios.get(apiUrl).then(updateWeather);
 }
 
+function handleSearch(event) {
+  event.preventDefault();
+  let searchInput = document.querySelector("#search-form-input");
+  searchCity(searchInput.value);
+}
+
 function formatDay(timestamp) {
   let date = new Date(timestamp * 1000);
   let days = [
@@ -66,6 +71,7 @@ function formatDay(timestamp) {
     "Friday",
     "Saturday",
   ];
+
   return days[date.getDay()];
 }
 
@@ -77,10 +83,19 @@ function getForecast(coords) {
 
 function showForecast(response) {
   let forecastHtml = "";
+  let dailyForecasts = {};
 
-  response.data.list.forEach(function (forecast, index) {
-    if (index < 5) {
-      forecastHtml += `
+  response.data.list.forEach(function (forecast) {
+    const day = formatDay(forecast.dt);
+    if (!dailyForecasts[day]) {
+      dailyForecasts[day] = forecast;
+    }
+  });
+
+  
+  Object.keys(dailyForecasts).forEach(function (day) {
+    const forecast = dailyForecasts[day];
+    forecastHtml += `
       <div class="weather-forecast-day">
         <div class="weather-forecast-date">${formatDay(forecast.dt)}</div>
         <img src="https://openweathermap.org/img/wn/${
@@ -97,22 +112,13 @@ function showForecast(response) {
         </div>
       </div>
     `;
-    }
   });
 
   let forecastElement = document.querySelector("#forecast");
   forecastElement.innerHTML = forecastHtml;
 }
 
-function handleSearchSubmit(event) {
-  event.preventDefault();
-  let searchInput = document.querySelector("#search-form-input");
-  let cityElement = document.querySelector("#city");
-  cityElement.innerHTML = searchInput.value;
-  searchCity(searchInput.value);
-}
-
 let searchFormElement = document.querySelector("#search-form");
-searchFormElement.addEventListener("submit", handleSearchSubmit);
+searchFormElement.addEventListener("submit", handleSearch);
 
 searchCity("Enugu");
